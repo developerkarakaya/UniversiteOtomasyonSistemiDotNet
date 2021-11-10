@@ -1,0 +1,124 @@
+﻿@using UniversiteOtomasyon.DataEntities
+
+@{
+    ViewBag.Title = "Not Listesi";
+}
+@model IEnumerable<UniversiteOtomasyon.DataEntities.NOTESTb>
+<h3 class="box-title">Not Listesi</h3>
+<div class="col-sm-12">
+    <div class="white-box">
+        <div class="table-responsive">
+            <table class="table color-bordered-table success-bordered-table">
+                <thead>
+                    <tr>
+                        <th>Ders</th>
+                        <th>Not Ekleyen</th>
+                        <th>Vize 1</th>
+                        <th>Vize 2</th>
+                        <th>Final</th>
+                        <th>Bütünleme</th>
+                        <th>Ders Ortalaması</th>
+                        <th>Harf Notu</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @{
+                                    using (var db = new UniversiteOtomasyonEntities())
+                                    {
+                                        <span>@db.LESSONTb.FirstOrDefault(ss => ss.ID == item.LESSONID).LESSONNAME</span>
+                                    }
+                                }
+
+                            </td>
+                            <td>
+                                @{
+                                    using (var db = new UniversiteOtomasyonEntities())
+                                    {
+                                        var details = db.UserDetails.FirstOrDefault(ss => ss.USERID == item.NOTADDEDID);
+                                        if (details != null)
+                                        {
+
+                                            <span>@details.NAMESURNAME</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="label label-danger">Kayıt Yok</span>
+                                        }
+                                    }
+                                }
+                            </td>
+                            <td>@item.NOTVISA1</td>
+                            <td>@item.NOTVISA2</td>
+                            <td>@item.NOTFINAL</td>
+                            <td>@item.NOTCOMPLETE</td>
+                            <td>
+                                @{
+                                    int v, f;
+                                    double sonuc;
+                                   
+                                    if (item.NOTCOMPLETE == null)
+                                    {
+                                        v = Convert.ToInt32(item.NOTVISA1) + Convert.ToInt32(item.NOTVISA2);
+                                        f = Convert.ToInt32(item.NOTFINAL);
+                                    }
+                                    else
+                                    {
+                                        v = Convert.ToInt32(item.NOTVISA1) + Convert.ToInt32(item.NOTVISA2);
+                                        f = Convert.ToInt32(item.NOTCOMPLETE);
+                                    }
+                                    sonuc = (v * 0.4) + (f * 0.6);
+                                
+                                }
+                                @sonuc
+                            </td>
+                            <td>@if (sonuc != null) {
+                                string harfNotu = "";
+                                if (sonuc > 0 && sonuc < 50)
+                                {
+                                    harfNotu = "FF";
+                                }
+                                if (sonuc >= 50 && sonuc < 60)
+                                {
+                                    harfNotu = "CC";
+                                }
+                                if (sonuc > 60 && sonuc < 70)
+                                {
+                                    harfNotu = "CB";
+                                }
+                                if (sonuc > 70 && sonuc < 80)
+                                {
+                                    harfNotu = "BB";
+
+                                }
+                                if (sonuc > 80 && sonuc < 90)
+                                {
+                                    harfNotu = "BA";
+
+                                }
+
+                                if (sonuc > 90 && sonuc <= 100)
+                                {
+                                    harfNotu = "AA";
+                                }
+                                if (sonuc > 100)
+                                {
+                                    harfNotu = "Yanlış not veya notlar girdiniz.";
+                                }
+                                <span>@harfNotu</span>
+                            }
+                            
+                            </td>
+
+                      </tr>
+                                }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+

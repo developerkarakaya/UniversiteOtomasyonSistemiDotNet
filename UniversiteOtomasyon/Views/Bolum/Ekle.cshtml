@@ -1,0 +1,75 @@
+﻿
+@{
+    ViewBag.Title = "Bölüm Ekle";
+}
+
+
+@using UniversiteOtomasyon.DataEntities;
+<link href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css" rel="stylesheet" type="text/css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="white-box">
+            <h3 class="box-title">Bölüm Ekle</h3>
+            <form class="form-material form-horizontal" action="@Url.Action("Ekle","Bolum")" method="post" enctype="multipart/form-data">
+                <div class="form-group">
+                    <div class="form-group">
+                        <label class="col-sm-12">Fakülte </label>
+                        <div class="col-sm-12">
+                            <select  id="FACULTYID" name="FACULTYID" class="form-control" required>
+                                <option>Fakülte Seç</option>
+                                @foreach (var item in ViewBag.FacultyAll)
+                                {
+                                        <option value="@item.ID">@item.FACULTYNAME</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <label class="col-md-12" for="example-text">
+                        <span> Bölüm Adı</span>
+                    </label>
+                    <div class="col-md-12">
+                        <input type="text" id="EPIDOSENAME" name="EPIDOSENAME" class="form-control" placeholder="Bölüm Adı Giriniz" required>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-success waves-effect waves-light m-r-10">Kaydet</button>
+                <a href="/bolum-listesi" class="btn btn-inverse waves-effect waves-light">Listeye Dön</a>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    if ('@ViewBag.message' == 1) {
+        ShowMessage("İşlem Başarıyla Gerçekleşti", 's');
+    }
+    else if ('@ViewBag.message' == 2) {
+        ShowMessage("İşlem Gerçekleşirken Hata Meydana Geldi", 'e');
+    }
+    else {
+
+    }
+
+
+        function ShowMessage(message, type) {
+            if (type == "s") {
+                swal({
+                    title: 'İşlem Başarılı',
+                    text: message,
+                    type: 'success',
+                    showCancelButtonClass: 'btn-success',
+                    confirmButtonText: 'Tamam'
+                });
+            }
+            else {
+                swal({
+                    title: 'İşlem Başarısız',
+                    text: message,
+                    type: 'error',
+                    showCancelButtonClass: 'btn-danger',
+                    confirmButtonText: 'Tamam'
+                });
+            }
+        }
+</script>

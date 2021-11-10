@@ -1,0 +1,69 @@
+﻿@model UniversiteOtomasyon.DataEntities.USERS
+@{
+    ViewBag.Title = "Kullanıcı Bilgileri";
+}
+
+@using UniversiteOtomasyon.DataEntities;
+<link href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css" rel="stylesheet" type="text/css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="white-box">
+            <h3 class="box-title">PROFİL -Kullanıcı Gücelleme </h3>
+            <form class="form-material form-horizontal" action="@Url.Action("kullanicibilgileri","Account")" method="post" enctype="multipart/form-data">
+                <input type="hidden" value="@Model.ID" name="ID" />
+                <div class="form-group" id="profil">
+                    <label class="col-md-12" for="year">
+                        <span>Kullanıcı Adı</span>
+                    </label>
+                    <div class="col-md-12">
+                        <input type="text" id="USERNAME" value="@Model.USERNAME" name="USERNAME" class="form-control" placeholder="Kullanıcı Adı Giriniz" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-12" for="year">
+                        <span>Şifre</span>
+                    </label>
+                    <div class="col-md-12">
+                        <input type="text" id="PASSWORDUSER" value="@Model.PASSWORDUSER" name="PASSWORDUSER" class="form-control" placeholder="Şifre Giriniz" required>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-success waves-effect waves-light m-r-10">Kaydet</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    if ('@ViewBag.success' == 1) {
+        ShowMessage("İşlem Başarıyla Gerçekleşti", 's');
+    }
+    else if ('@ViewBag.success' == 2) {
+        ShowMessage("İşlem Gerçekleşirken Hata Meydana Geldi", 'e');
+    }
+    else {
+
+    }
+
+        function ShowMessage(message, type) {
+            if (type == "s") {
+                swal({
+                    title: 'İşlem Başarılı',
+                    text: message,
+                    type: 'success',
+                    showCancelButtonClass: 'btn-success',
+                    confirmButtonText: 'Tamam'
+                });
+            }
+            else {
+                swal({
+                    title: 'İşlem Başarısız',
+                    text: message,
+                    type: 'error',
+                    showCancelButtonClass: 'btn-danger',
+                    confirmButtonText: 'Tamam'
+                });
+            }
+        }
+</script>
+

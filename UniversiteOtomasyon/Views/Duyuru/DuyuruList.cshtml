@@ -1,0 +1,131 @@
+﻿@using UniversiteOtomasyon.Service.UserContext
+@{
+    ViewBag.Title = "Duyuru Listesi";
+}
+@model List<UniversiteOtomasyon.DataEntities.ANNOUNCEMENTS>
+
+@{
+
+}
+<script src="~/Content/UniOtomasyon/plugins/bower_components/jquery/dist/jquery.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css" rel="stylesheet" type="text/css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+
+<h3 class="box-title">Duyuru Listesi</h3>
+<div class="col-sm-12">
+    <div class="white-box">
+        <div class="table-responsive">
+            <table class="table color-bordered-table info-bordered-table">
+                <thead>
+                    <tr>
+                        <th>Duyuru Başlık</th>
+                        <th>Eklenme Tarihi</th>
+                        <th>Yayın Durumu </th>
+                        @if (UserContext.Current.User.ROLID != 1)
+                        {
+                            <th>İşlemler</th>
+
+                        }
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                    <tr>
+                        <td>@item.TITLE</td>
+                        <td>@item.ANNOUNCEMENTSDATE</td>
+
+                        @if (item.State == 1)
+                        {
+                            <td>
+                                <label class="label label-success">Yayında</label>
+                            </td>
+                        }
+                        else
+                        {
+                            <td>
+                                <label class="label label-danger">Yayında Değil</label>
+                            </td>
+
+                        }
+                        @if (UserContext.Current.User.ROLID != 1)
+                        {
+                            <td style="width: 227px">
+                                <a class="btn btn-danger" onclick="Sil(@item.ID)">Sil</a>
+                                <a class="btn btn-success" href="/duyuru-ekle/@item.ID">Detay / Düzenle</a>
+                            </td>
+                        }
+
+                    </tr>
+                    }
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    function Sil(id) {
+        swal({
+            title: 'Silme İşlemi',
+            text: 'Seçtiğiniz veriyi silmek istediğinizden emin misiniz? ',
+            type: 'warning',
+            showCancelButton: true,
+            confrimButtonClass: 'btn-danger',
+            confirmButtonText: 'Evet',
+            cancelButtonText: 'Hayır',
+            closeOnConfrim: false,
+            closeOnCancel: false
+
+        },
+            function (isConfrim) {
+                if (isConfrim) {
+                    var Id = id;
+                    $.ajax({
+                        method: "POST",
+                        url: "/Duyuru/Delete/" + Id,
+                        dataType: 'json',
+                        success: function (data) {
+                            if (data == "Success") {
+                                ShowMessage("Silme İşlemi Başarıyla Gerçekleşti.", "s");
+
+                            }
+                            else {
+                                ShowMessage("Silme İşlemi Gerçekleşirken Hata Oluştu.", "e");
+                            }
+                        }
+                    });
+                }
+                else {
+                    swal({ title: 'Kapatıldı', text: 'Veriyi silmekten vazgeçtiniz.', type: 'error', confirmButtonText: 'Tamam' });
+                }
+                setTimeout(function () {
+                    window.location.reload();
+                }, 2000);
+            }
+
+        );
+    }
+    function ShowMessage(message, type) {
+        if (type == "s") {
+            swal({
+                title: 'İşlem Başarılı',
+                text: message,
+                type: 'success',
+                showCancelButtonClass: 'btn-success',
+                confirmButtonText: 'Tamam'
+            });
+        }
+        else {
+            swal({
+                title: 'İşlem Başarısız',
+                text: message,
+                type: 'error',
+                showCancelButtonClass: 'btn-danger',
+                confirmButtonText: 'Tamam'
+            });
+        }
+    }
+</script>

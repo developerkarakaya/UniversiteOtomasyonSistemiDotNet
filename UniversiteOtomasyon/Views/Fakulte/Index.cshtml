@@ -1,0 +1,86 @@
+﻿
+@{
+    ViewBag.Title = "Fakülte Listesi";
+}
+@model List<UniversiteOtomasyon.DataEntities.FACULTY>
+<h3 class="box-title">Fakülte Listesi</h3>
+<div class="col-sm-12">
+    <div class="white-box">
+        <div class="table-responsive">
+            <table class="table color-bordered-table info-bordered-table">
+                <thead>
+                    <tr>
+                        <th>Fakülte Adı</th>
+                        <th>İşlemler</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.FACULTYNAME</td>
+                            <td style="width: 227px">
+                                <a class="btn btn-danger" onclick="Sil(@item.ID)">Sil</a>
+                            </td>
+                        </tr>
+
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+@if(ViewBag.message!=null)
+            {
+                <div class="alert alert-danger">
+                    @ViewBag.message
+
+                </div>
+            }
+
+<script>
+    function Sil(id) {
+
+        swal({
+            title: 'Silme İşlemi',
+            text: 'Seçtiğiniz veriyi silmek istediğinizden emin misiniz? ',
+            type: 'warning',
+            showCancelButton: true,
+            confrimButtonClass: 'btn-danger',
+            confirmButtonText: 'Evet',
+            cancelButtonText: 'Hayır',
+            closeOnConfrim: false,
+            closeOnCancel: false
+
+        },
+            function (isConfrim) {
+                if (isConfrim) {
+                    var Id = id;
+                    $.ajax({
+                        method: "POST",
+                        url: "/Fakulte/fakulteSil/" + Id,
+                        dataType: 'json',
+                        success: function (data) {
+                            if (data == "Success") {
+                                ShowMessage("Silme İşlemi Başarıyla Gerçekleşti.", "s");
+
+                            }
+                            else {
+                                ShowMessage("Silme İşlemi Gerçekleşirken Hata Oluştu.", "e");
+                            }
+                        }
+                    });
+                }
+                else {
+                    swal({ title: 'Kapatıldı', text: 'Veriyi silmekten vazgeçtiniz.', type: 'error', confirmButtonText: 'Tamam' });
+                }
+                setTimeout(function () {
+                    window.location.reload();
+                }, 2000);
+            }
+
+        );
+    }
+
+</script>

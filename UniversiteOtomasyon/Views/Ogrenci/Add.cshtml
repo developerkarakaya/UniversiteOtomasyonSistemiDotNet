@@ -1,0 +1,218 @@
+﻿@model UniversiteOtomasyon.DataEntities.UserDetails
+@{
+    ViewBag.Title = "Öğrenci Ekle";
+}
+@using UniversiteOtomasyon.DataEntities;
+<link href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css" rel="stylesheet" type="text/css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="white-box">
+            <h3 class="box-title">Öğrenci Ekle/Güncelle</h3>
+            <form class="form-material form-horizontal" action="@Url.Action("Add","Ogrenci")" method="post" enctype="multipart/form-data">
+                <input type="hidden" value="@Model.ID" name="ID" />
+                <div class="form-group">
+                    <label class="col-md-12" for="example-text">
+                        <span> Adı</span>
+                    </label>
+                    <div class="col-md-12">
+                        <input type="text" value="@Model.NAMESURNAME" id="NAMESURNAME" name="NAMESURNAME" class="form-control" placeholder=" Adı Giriniz" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-12" for="example-text">
+                        <span> Numara</span>
+                    </label>
+                    <div class="col-md-12">
+                        <input type="text" value="@Model.NUMBER" id="NUMBER" name="NUMBER" class="form-control" placeholder="Numara Giriniz" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-12" for="bdate">
+                        <span>
+                            Tc Kimlik No
+                        </span>
+                    </label>
+                    <div class="col-md-12">
+                        <input type="text" value="@Model.TCNUMBER" maxlength="11" id="TCNUMBER" name="TCNUMBER" class="form-control" placeholder="Tc Kimlik No Giriniz" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-12" for="bdate">
+                        <span> Doğum Tarihi</span>
+                    </label>
+                    <div class="col-md-12">
+                        <input type="text" value="@Model.BIRTHDAY" id="BIRTHDAY"  name="BIRTHDAY" class="form-control mydatepicker" placeholder="Doğum Tarihi Giriniz" >
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-12">Cinsiyet</label>
+                    <div class="col-sm-12">
+                        <select id="GENDER" name="GENDER" value="@Model.GENDER" class="form-control" required>
+                            <option >Cinsiyet Seçiniz</option>
+                            @if (Model.ID != 0)
+                            {
+                                <option value="@(Model.GENDER==true ? 1:0)" selected>@(Model.GENDER ==true ? "Erkek" : "Kadın")</option>
+                            }
+                            <option value="1">Erkek</option>
+                            <option value="0">Kadın</option>
+
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-12">Profil Fotoğrafı</label>
+                    <div class="col-sm-12">
+                        <div class="fileinput fileinput-new input-group" data-provides="fileinput">
+                            <div class="form-control" data-trigger="fileinput"> <i class="glyphicon glyphicon-file fileinput-exists"></i> <span class="fileinput-filename"></span></div> <span class="input-group-addon btn btn-default btn-file">
+                                <span class="fileinput-new">Fotoğraf Seç</span> <span class="fileinput-exists">Değiştir</span>
+                                <input id="IMAGES" type="file" name="IMAGES" >
+                            </span> <a href="#" class="input-group-addon btn btn-default fileinput-exists" data-dismiss="fileinput">Sil</a>
+                        </div>
+                        <div class="col-sm-4">
+                            @if (Model.IMAGES != null)
+                            {
+                                <img src="@Model.IMAGES" style="width:350px; height:250px" /> <br /> <br />
+                                <label class="label label-success">Eğer fotoğraf seçimi yapmazsanız mevcut fotoğraf sistemde kalacaktır.</label>
+                            }
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-12">Fakülte </label>
+                    <div class="col-sm-12">
+                        <select onchange="getEpidose()" id="FACULTY" name="FACULTY" class="form-control" required>
+                            <option>Fakülte Seç</option>
+                            @foreach (var item in ViewBag.FacultyAll)
+                            {
+                                if (Model.FACULTY != 0)
+                                {
+                                    if (Model.FACULTY1.ID == item.ID)
+                                    {
+                                        <option value="@Model.FACULTY1.ID" selected>@Model.FACULTY1.FACULTYNAME</option>
+                                    }
+                                }
+                                else
+                                {
+                                    <option value="@item.ID">@item.FACULTYNAME</option>
+
+                                }
+
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-12">Bölüm </label>
+                    <div class="col-sm-12">
+                        <select id="EPIDOSE" name="EPIDOSE" class="form-control" required>
+                            <option>Bölüm Seç</option>
+                            @if (Model.EPIDOSE != 0)
+                            {
+                                using (var db = new UniversiteOtomasyonEntities())
+                                {
+
+
+                                    EPIDOSE epidose = db.EPIDOSE.FirstOrDefault(ss => ss.ID == Model.EPIDOSE);
+                                    <option value="@epidose.ID" selected>@epidose.EPIDOSENAME</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-12" for="year">
+                        <span>Sınıf</span>
+                    </label>
+                    <div class="col-md-12">
+                        <input type="number" value="@Model.USERCLASS" id="USERCLASS" name="USERCLASS" class="form-control" placeholder="Sınıf Giriniz" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-12">Adres</label>
+                    <div class="col-md-12">
+                        <textarea id="ADDRES" name="ADDRES" class="form-control" rows="3" required>@Model.ADDRES</textarea>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-12" for="example-phone">
+                        <span> Telefon</span>
+                    </label>
+                    <div class="col-md-12">
+                        <input type="text" id="TELNUMBER" value="@Model.TELNUMBER" name="TELNUMBER" class="form-control" placeholder="Telefon Giriniz" data-mask="(999) 999-9999" required>
+                    </div>
+                </div>
+                <div class="form-group" id="profil">
+                    <label class="col-md-12" for="year">
+                        <span>Kullanıcı Adı</span>
+                    </label>
+                    <div class="col-md-12">
+                        <input type="text" id="USERNAME" value="@Model.USERNAME" name="USERNAME" class="form-control" placeholder="Kullanıcı Adı Giriniz" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-12" for="year">
+                        <span>Şifre</span>
+                    </label>
+                    <div class="col-md-12">
+                        <input type="text" id="PASSWORD" value="@Model.PASSWORD" name="PASSWORD" class="form-control" placeholder="Şifre Giriniz" required>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-success waves-effect waves-light m-r-10">Kaydet</button>
+                <a href="/ogrenci-listesi" class="btn btn-inverse waves-effect waves-light">Listeye Dön</a>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    if ('@ViewBag.success' == 1) {
+        ShowMessage("İşlem Başarıyla Gerçekleşti", 's');
+    }
+    else if ('@ViewBag.success' == 2) {
+        ShowMessage("İşlem Gerçekleşirken Hata Meydana Geldi", 'e');
+    }
+    else {
+
+    }
+    function getEpidose() {
+        $('#EPIDOSE').html("");
+        $('#EPIDOSE').append("<option>Bölüm Seç</option>");
+        var facultyId = $('#FACULTY').val();
+        $.ajax({
+            method: "POST",
+            url: "/Ogrenci/epidoseGet/" + facultyId,
+            dataType: 'json',
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                for (var i = 0; i < data.length; i++) {
+                    $('#EPIDOSE').append("<option value=" + data[i].ID + " >" + data[i].EPIDOSENAME + "</option>")
+                }
+
+
+            }
+        });
+                }
+
+
+        function ShowMessage(message, type) {
+            if (type == "s") {
+                swal({
+                    title: 'İşlem Başarılı',
+                    text: message,
+                    type: 'success',
+                    showCancelButtonClass: 'btn-success',
+                    confirmButtonText: 'Tamam'
+                });
+            }
+            else {
+                swal({
+                    title: 'İşlem Başarısız',
+                    text: message,
+                    type: 'error',
+                    showCancelButtonClass: 'btn-danger',
+                    confirmButtonText: 'Tamam'
+                });
+            }
+        }
+</script>

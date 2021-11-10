@@ -1,0 +1,105 @@
+﻿@using UniversiteOtomasyon.Service.UserContext
+
+@{
+    ViewBag.Title = "Duyuru Ekle";
+}
+
+@model UniversiteOtomasyon.DataEntities.ANNOUNCEMENTS
+<script src="~/Content/UniOtomasyon/plugins/bower_components/jquery/dist/jquery.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css" rel="stylesheet" type="text/css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+<div class="row">
+    <div class="col-sm-6" style="margin:auto; position:relative">
+        <div class="white-box">
+            <h3 class="box-title">Duyuru Ekle/Güncelle</h3>
+            <form class="form-material form-horizontal" action="@Url.Action("DuyuruEkle","Duyuru")" method="post">
+                <input type="hidden" id="ID" value="@Model.ID" name="ID" />
+                <input type="hidden" value="@UserContext.Current.User.ID" name="USERID" />
+                <div class="form-group">
+                    <label class="col-md-12" for="example-text">
+                        Başlık</span>
+                    </label>
+                    <div class="col-md-12">
+                        <input type="text" value="@Model.TITLE" id="TITLE" name="TITLE" autocomplete="off" required placeholder="Başlık Giriniz" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-12" for="example-text">
+                        İçerik </span>
+                    </label>
+                    <div class="col-md-12">
+                        <textarea id="CONTENT" class="ckeditor" name="CONTENT" autocomplete="off" placeholder="İçerik Giriniz" required> @Html.Raw(Model.CONTENT)</textarea>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-12">Yayında Durumu </label>
+                    <div class="col-sm-12">
+                        <select id="State" name="State" value="@Model.State" class="form-control" required>
+  
+                            
+                            <option>Yayın Durumu Seçiniz</option>
+                            <option value="1" @(Model.State ==1 ? "selected" : "")>Yayında</option>
+                            <option value="0" @(Model.State ==0 ? "selected" : "")>Yayında Değil</option>
+
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-12" for="bdate">
+                        <span> Tarih </span>
+                    </label>
+                    <div class="col-md-12">
+                        <input type="text" id="ANNOUNCEMENTSDATE" value="@Model.ANNOUNCEMENTSDATE" required autocomplete="off" name="ANNOUNCEMENTSDATE" class="form-control mydatepicker" placeholder=" Tarihi Giriniz">
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-success waves-effect waves-light m-r-10">Kaydet</button>
+                <a class="btn btn-inverse waves-effect waves-light" href="/duyuru-listesi">Duyuru Listesine Dön</a>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+         if ('@ViewBag.success' == 1) {
+        ShowMessage("İşlem Başarıyla Gerçekleşti", 's');
+    }
+    else if ('@ViewBag.success' == 2) {
+        ShowMessage("İşlem Gerçekleşirken Hata Meydana Geldi", 'e');
+    }
+    else {
+
+    }
+    function ShowMessage(message, type) {
+        if (type == "s") {
+            swal({
+                title: 'İşlem Başarılı',
+                text: message,
+                type: 'success',
+                showCancelButtonClass: 'btn-success',
+                confirmButtonText: 'Tamam'
+            });
+        }
+        else {
+            swal({
+                title: 'İşlem Başarısız',
+                text: message,
+                type: 'error',
+                showCancelButtonClass: 'btn-danger',
+                confirmButtonText: 'Tamam'
+            });
+        }
+    }
+    var editor = CKEDITOR.instances['CONTENT'];
+    if (editor) { editor.destroy(true); }
+    CKEDITOR.replace('CONTENT', {
+        filebrowserBrowseUrl: '@Url.Content("~/ckeditor/ckfinder/ckfinder.html")',
+        filebrowserImageBrowseUrl: '@Url.Content("~/ckeditor/ckfinder/ckfinder.html?type=Images")',
+        filebrowserFlashBrowseUrl: '~/ckeditor/ckeditor/ckfinder/ckfinder.html?type=Flash',
+        filebrowserUploadUrl: '~/ckeditor/ckfinder/core/connector/aspx/connector.aspx?command=QuickUpload&type=Files',
+        filebrowserImageUploadUrl: '~/ckeditor/ckfinder/core/connector/aspx/connector.aspx?command=QuickUpload&type=Images',
+        filebrowserFlashUploadUrl: '~/ckeditor/ckfinder/core/connector/aspx/connector.aspx?command=QuickUpload&type=Flash'
+    });
+
+</script>
+
+

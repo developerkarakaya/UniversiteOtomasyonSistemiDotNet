@@ -1,0 +1,109 @@
+﻿
+@{
+    ViewBag.Title = "Öğrenci Listesi";
+}
+@model List<UniversiteOtomasyon.DataEntities.UserDetails>
+@using UniversiteOtomasyon.Service.UserContext
+<h3 class="box-title">Öğrenci Listesi</h3>
+<div class="col-sm-12">
+    <div class="white-box">
+        <div class="table-responsive">
+            <table class="table color-bordered-table info-bordered-table">
+                <thead>
+                    <tr>
+                        <th>Numara</th>
+                        <th>Adı Soyadı</th>
+                        <th>Tc Kimlik No</th>
+                        <th>Cinsiyet</th>
+                        <th>Doğum Tarihi</th>
+                        <th>Telefon</th>
+                        <th>Fakülte-Bölüm</th>
+                        @if (UserContext.Current.User.ROLID != 1)
+                        {
+                            <th>İşlemler</th>
+                        }
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                    <tr>
+                        <th>@item.NUMBER</th>
+                        <td>@item.NAMESURNAME</td>
+                        <td>@item.TCNUMBER</td>
+                        <td>
+                            @if (item.GENDER == true)
+                            {
+                                <span>Erkek</span>
+                            }
+                            else
+                            {
+                                <span>Kadın</span>
+                            }
+                        </td>
+                        <td>@item.BIRTHDAY</td>
+                        <td>
+                            <a href="tel:@item.TELNUMBER">@item.TELNUMBER</a>
+                        </td>
+                        <td>@item.FACULTY1.FACULTYNAME - @item.EPIDOSE1.EPIDOSENAME</td>
+                        @if (UserContext.Current.User.ROLID != 1)
+                        {
+                            <td style="width: 227px">
+                                <a class="btn btn-danger" onclick="Sil(@item.ID)">Sil</a>
+                                <a class="btn btn-success" href="/ogrenci-ekle/@item.ID">Düzenle</a>
+                            </td>
+                        }
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    function Sil(id) {
+
+        swal({
+            title: 'Silme İşlemi',
+            text: 'Seçtiğiniz veriyi silmek istediğinizden emin misiniz? ',
+            type: 'warning',
+            showCancelButton: true,
+            confrimButtonClass: 'btn-danger',
+            confirmButtonText: 'Evet',
+            cancelButtonText: 'Hayır',
+            closeOnConfrim: false,
+            closeOnCancel: false
+
+        },
+            function (isConfrim) {
+                if (isConfrim) {
+                    var Id = id;
+                    $.ajax({
+                        method: "POST",
+                        url: "/Ogrenci/OgrenciSil/" + Id,
+                        dataType: 'json',
+                        success: function (data) {
+                            if (data == "Success") {
+                                ShowMessage("Silme İşlemi Başarıyla Gerçekleşti.", "s");
+
+                            }
+                            else {
+                                ShowMessage("Silme İşlemi Gerçekleşirken Hata Oluştu.", "e");
+                            }
+                        }
+                    });
+                }
+                else {
+                    swal({ title: 'Kapatıldı', text: 'Veriyi silmekten vazgeçtiniz.', type: 'error', confirmButtonText: 'Tamam' });
+                }
+                setTimeout(function () {
+                    window.location.reload();
+                }, 2000);
+            }
+
+        );
+    }
+
+</script>

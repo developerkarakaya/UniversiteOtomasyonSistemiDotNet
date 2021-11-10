@@ -1,0 +1,126 @@
+﻿@using UniversiteOtomasyon.Service.UserContext;
+
+@{
+    ViewBag.Title = "Not Ekle";
+}
+@model UniversiteOtomasyon.DataEntities.NOTESTb
+<script src="~/Content/UniOtomasyon/plugins/bower_components/jquery/dist/jquery.min.js"></script>
+
+<div class="row">
+    <div class="col-sm-6" style="margin:auto; position:relative">
+        <div class="white-box">
+            <h3 class="box-title">Not Ver/Güncelle</h3>
+            <form class="form-material form-horizontal" action="@Url.Action("NoteAdd","Ogrenci")" method="post">
+                <input type="hidden" value="@UserContext.Current.User.ID" name="NOTADDEDID" /> <!--user ıd gelecek-->
+                <div class="form-group">
+                    <label class="col-sm-12">Öğrenci</label>
+                    <div class="col-sm-12">
+                        <select name="UserDetailsId" id="UserDetailsId" onchange="studentSelect()" class="form-control">
+                            <option>Öğrenci Seçiniz</option>
+                            @if (ViewBag.StudentList != null)
+                            {
+                                foreach (var item in ViewBag.StudentList)
+                                {
+                                    if (Model != null)
+                                    {
+                                        if (Model.UserDetailsId == item.ID)
+                                        {
+                                            <option value="@item.ID" selected>@item.NAMESURNAME</option>
+                                        }
+                                    }
+                                    <option value="@item.ID">@item.NAMESURNAME</option>
+                                }
+                            }
+
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-12">Ders</label>
+                    <div class="col-sm-12">
+                        <select name="LESSONID" id="LESSONID" class="form-control">
+                            <option>Ders Seçiniz</option>
+
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-12" for="example-text">
+                        Vize Notu 1</span>
+                    </label>
+                    <div class="col-md-12">
+                        <input type="number" value="@Model.NOTVISA1" id="NOTVISA1" name="NOTVISA1" placeholder="Vize 1 Giriniz" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-12" for="example-text">
+                        Vize Notu 2</span>
+                    </label>
+                    <div class="col-md-12">
+                        <input type="number" value="@Model.NOTVISA2" id="NOTVISA2" name="NOTVISA2" placeholder="Vize 2 Giriniz" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-12" for="example-text">
+                        Final Notu </span>
+                    </label>
+                    <div class="col-md-12">
+                        <input type="number" id="NOTFINAL" value="@Model.NOTFINAL" name="NOTFINAL" placeholder="Final Notu Giriniz" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-12" for="example-text">
+                        Bütünleme Notu </span>
+                    </label>
+                    <div class="col-md-12">
+                        <input type="number" id="NOTCOMPLETE" value="@Model.NOTCOMPLETE" name="NOTCOMPLETE" placeholder="Bütünleme Notu Giriniz" class="form-control">
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-success waves-effect waves-light m-r-10">Kaydet</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+
+
+
+    function studentSelect() {
+        $('#LESSONID').html("");
+        $('#LESSONID').append("<option>Ders Seç</option>");
+        var studentId = $("#UserDetailsId").val();
+        $.ajax({
+            method: "POST",
+            url: "/Ogrenci/LessonListInEpidose/" + studentId,
+            dataType: 'json',
+            success: function (data) {
+                for (var i = 0; i < data.length; i++) {
+                    $('#LESSONID').append("<option value=" + data[i].ID + " >" + data[i].LESSONNAME + "</option>")
+                }
+            }
+        });
+    }
+    $(document).ready(function () {
+
+        var studentId = $("#UserDetailsId").val();
+        var lessonId = '@Model.LESSONID';
+        if (studentId != null && lessonId !=null) {
+            $.ajax({
+                method: "POST",
+                url: "/Ogrenci/LessonListInEpidose/" + studentId,
+                dataType: 'json',
+                success: function (data) {
+                    for (var i = 0; i < data.length; i++) {
+                        if (data[i].ID == lessonId) {
+                            $('#LESSONID').append("<option value=" + data[i].ID + " selected>" + data[i].LESSONNAME + "</option>")
+                        }
+                        $('#LESSONID').append("<option value=" + data[i].ID + " >" + data[i].LESSONNAME + "</option>")
+                    }
+                }
+            });
+        }
+
+    });
+</script>
+

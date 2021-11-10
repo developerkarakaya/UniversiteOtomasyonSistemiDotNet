@@ -1,0 +1,741 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="UniversiteOtomasyonModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="ANNOUNCEMENTS">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TITLE" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="CONTENT" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="ANNOUNCEMENTSDATE" Type="date" Nullable="false" />
+          <Property Name="USERID" Type="int" Nullable="false" />
+          <Property Name="State" Type="int" />
+        </EntityType>
+        <EntityType Name="EPIDOSE">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EPIDOSENAME" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="FACULTYID" Type="int" />
+        </EntityType>
+        <EntityType Name="FACULTY">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FACULTYNAME" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="LESSONTb">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LESSONNAME" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="CODE" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="CREDIT" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="EPIDOSEID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="MESSAGESS">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SENDERID" Type="int" Nullable="false" />
+          <Property Name="ANCHOVIESID" Type="int" Nullable="false" />
+          <Property Name="MESSAGECONTENT" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="MESSAGESENDERDATE" Type="date" Nullable="false" />
+        </EntityType>
+        <EntityType Name="NOTESTb">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NOTADDEDID" Type="int" Nullable="false" />
+          <Property Name="LESSONID" Type="int" Nullable="false" />
+          <Property Name="UserDetailsId" Type="int" Nullable="false" />
+          <Property Name="NOTVISA1" Type="nvarchar" MaxLength="10" />
+          <Property Name="NOTVISA2" Type="nvarchar" MaxLength="10" />
+          <Property Name="NOTFINAL" Type="nvarchar" MaxLength="10" />
+          <Property Name="NOTCOMPLETE" Type="nvarchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="ROL">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ROLNAME" Type="nvarchar" MaxLength="50" />
+          <Property Name="STATEROL" Type="int" />
+        </EntityType>
+        <EntityType Name="UserDetails">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NAMESURNAME" Type="nvarchar" MaxLength="50" />
+          <Property Name="NUMBER" Type="bigint" />
+          <Property Name="TCNUMBER" Type="char" MaxLength="11" Nullable="false" />
+          <Property Name="GENDER" Type="bit" Nullable="false" />
+          <Property Name="BIRTHDAY" Type="date" Nullable="false" />
+          <Property Name="ADDRES" Type="nvarchar" MaxLength="100" />
+          <Property Name="TELNUMBER" Type="varchar" MaxLength="50" />
+          <Property Name="FACULTY" Type="int" Nullable="false" />
+          <Property Name="EPIDOSE" Type="int" Nullable="false" />
+          <Property Name="USERCLASS" Type="int" />
+          <Property Name="IMAGES" Type="varchar" MaxLength="100" />
+          <Property Name="USERID" Type="int" Nullable="false" />
+          <Property Name="USERNAME" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="PASSWORD" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="USERS">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="USERNAME" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="PASSWORDUSER" Type="char" MaxLength="10" Nullable="false" />
+          <Property Name="ROLID" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__ANNOUNCEM__USERI__24927208">
+          <End Role="USERS" Type="Self.USERS" Multiplicity="1" />
+          <End Role="ANNOUNCEMENTS" Type="Self.ANNOUNCEMENTS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="USERS">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="ANNOUNCEMENTS">
+              <PropertyRef Name="USERID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__EPIDOSE__FACULTY__36B12243">
+          <End Role="FACULTY" Type="Self.FACULTY" Multiplicity="0..1" />
+          <End Role="EPIDOSE" Type="Self.EPIDOSE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FACULTY">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="EPIDOSE">
+              <PropertyRef Name="FACULTYID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__LESSONTb__EPIDOS__49C3F6B7">
+          <End Role="EPIDOSE" Type="Self.EPIDOSE" Multiplicity="1" />
+          <End Role="LESSONTb" Type="Self.LESSONTb" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EPIDOSE">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="LESSONTb">
+              <PropertyRef Name="EPIDOSEID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__MESSAGESS__ANCHO__21B6055D">
+          <End Role="USERS" Type="Self.USERS" Multiplicity="1" />
+          <End Role="MESSAGESS" Type="Self.MESSAGESS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="USERS">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="MESSAGESS">
+              <PropertyRef Name="ANCHOVIESID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__NOTESTb__LESSONI__5165187F">
+          <End Role="LESSONTb" Type="Self.LESSONTb" Multiplicity="1" />
+          <End Role="NOTESTb" Type="Self.NOTESTb" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LESSONTb">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="NOTESTb">
+              <PropertyRef Name="LESSONID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__NOTESTb__UserDet__5070F446">
+          <End Role="UserDetails" Type="Self.UserDetails" Multiplicity="1" />
+          <End Role="NOTESTb" Type="Self.NOTESTb" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserDetails">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="NOTESTb">
+              <PropertyRef Name="UserDetailsId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__UserDetai__EPIDO__412EB0B6">
+          <End Role="EPIDOSE" Type="Self.EPIDOSE" Multiplicity="1" />
+          <End Role="UserDetails" Type="Self.UserDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EPIDOSE">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="UserDetails">
+              <PropertyRef Name="EPIDOSE" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__UserDetai__FACUL__403A8C7D">
+          <End Role="FACULTY" Type="Self.FACULTY" Multiplicity="1" />
+          <End Role="UserDetails" Type="Self.UserDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FACULTY">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="UserDetails">
+              <PropertyRef Name="FACULTY" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__UserDetai__USERI__3F466844">
+          <End Role="USERS" Type="Self.USERS" Multiplicity="1" />
+          <End Role="UserDetails" Type="Self.UserDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="USERS">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="UserDetails">
+              <PropertyRef Name="USERID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__USERS__ROLID__173876EA">
+          <End Role="ROL" Type="Self.ROL" Multiplicity="1" />
+          <End Role="USERS" Type="Self.USERS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ROL">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="USERS">
+              <PropertyRef Name="ROLID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="noteAddProcedure" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="NOTADDEDID" Type="int" Mode="In" />
+          <Parameter Name="LESSONID" Type="int" Mode="In" />
+          <Parameter Name="UserDetailsId" Type="int" Mode="In" />
+          <Parameter Name="NOTVISA1" Type="nvarchar" Mode="In" />
+          <Parameter Name="NOTVISA2" Type="nvarchar" Mode="In" />
+          <Parameter Name="NOTFINAL" Type="nvarchar" Mode="In" />
+          <Parameter Name="NOTCOMPLETE" Type="nvarchar" Mode="In" />
+        </Function>
+        <EntityContainer Name="UniversiteOtomasyonModelStoreContainer">
+          <EntitySet Name="ANNOUNCEMENTS" EntityType="Self.ANNOUNCEMENTS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EPIDOSE" EntityType="Self.EPIDOSE" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FACULTY" EntityType="Self.FACULTY" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LESSONTb" EntityType="Self.LESSONTb" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MESSAGESS" EntityType="Self.MESSAGESS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="NOTESTb" EntityType="Self.NOTESTb" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ROL" EntityType="Self.ROL" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserDetails" EntityType="Self.UserDetails" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="USERS" EntityType="Self.USERS" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__ANNOUNCEM__USERI__24927208" Association="Self.FK__ANNOUNCEM__USERI__24927208">
+            <End Role="USERS" EntitySet="USERS" />
+            <End Role="ANNOUNCEMENTS" EntitySet="ANNOUNCEMENTS" />
+          </AssociationSet>
+          <AssociationSet Name="FK__EPIDOSE__FACULTY__36B12243" Association="Self.FK__EPIDOSE__FACULTY__36B12243">
+            <End Role="FACULTY" EntitySet="FACULTY" />
+            <End Role="EPIDOSE" EntitySet="EPIDOSE" />
+          </AssociationSet>
+          <AssociationSet Name="FK__LESSONTb__EPIDOS__49C3F6B7" Association="Self.FK__LESSONTb__EPIDOS__49C3F6B7">
+            <End Role="EPIDOSE" EntitySet="EPIDOSE" />
+            <End Role="LESSONTb" EntitySet="LESSONTb" />
+          </AssociationSet>
+          <AssociationSet Name="FK__MESSAGESS__ANCHO__21B6055D" Association="Self.FK__MESSAGESS__ANCHO__21B6055D">
+            <End Role="USERS" EntitySet="USERS" />
+            <End Role="MESSAGESS" EntitySet="MESSAGESS" />
+          </AssociationSet>
+          <AssociationSet Name="FK__NOTESTb__LESSONI__5165187F" Association="Self.FK__NOTESTb__LESSONI__5165187F">
+            <End Role="LESSONTb" EntitySet="LESSONTb" />
+            <End Role="NOTESTb" EntitySet="NOTESTb" />
+          </AssociationSet>
+          <AssociationSet Name="FK__NOTESTb__UserDet__5070F446" Association="Self.FK__NOTESTb__UserDet__5070F446">
+            <End Role="UserDetails" EntitySet="UserDetails" />
+            <End Role="NOTESTb" EntitySet="NOTESTb" />
+          </AssociationSet>
+          <AssociationSet Name="FK__UserDetai__EPIDO__412EB0B6" Association="Self.FK__UserDetai__EPIDO__412EB0B6">
+            <End Role="EPIDOSE" EntitySet="EPIDOSE" />
+            <End Role="UserDetails" EntitySet="UserDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK__UserDetai__FACUL__403A8C7D" Association="Self.FK__UserDetai__FACUL__403A8C7D">
+            <End Role="FACULTY" EntitySet="FACULTY" />
+            <End Role="UserDetails" EntitySet="UserDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK__UserDetai__USERI__3F466844" Association="Self.FK__UserDetai__USERI__3F466844">
+            <End Role="USERS" EntitySet="USERS" />
+            <End Role="UserDetails" EntitySet="UserDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK__USERS__ROLID__173876EA" Association="Self.FK__USERS__ROLID__173876EA">
+            <End Role="ROL" EntitySet="ROL" />
+            <End Role="USERS" EntitySet="USERS" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="UniversiteOtomasyonModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="UniversiteOtomasyonEntities" annotation:LazyLoadingEnabled="true">
+          <FunctionImport Name="getStudentList" ReturnType="Collection(UniversiteOtomasyonModel.getStudentList_Result)" />
+          <EntitySet Name="ANNOUNCEMENTS" EntityType="UniversiteOtomasyonModel.ANNOUNCEMENTS" />
+          <EntitySet Name="EPIDOSE" EntityType="UniversiteOtomasyonModel.EPIDOSE" />
+          <EntitySet Name="FACULTY" EntityType="UniversiteOtomasyonModel.FACULTY" />
+          <EntitySet Name="LESSONTb" EntityType="UniversiteOtomasyonModel.LESSONTb" />
+          <EntitySet Name="MESSAGESS" EntityType="UniversiteOtomasyonModel.MESSAGESS" />
+          <EntitySet Name="NOTESTb" EntityType="UniversiteOtomasyonModel.NOTESTb" />
+          <EntitySet Name="ROL" EntityType="UniversiteOtomasyonModel.ROL" />
+          <EntitySet Name="UserDetails" EntityType="UniversiteOtomasyonModel.UserDetails" />
+          <EntitySet Name="USERS" EntityType="UniversiteOtomasyonModel.USERS" />
+          <AssociationSet Name="FK__ANNOUNCEM__USERI__24927208" Association="UniversiteOtomasyonModel.FK__ANNOUNCEM__USERI__24927208">
+            <End Role="USERS" EntitySet="USERS" />
+            <End Role="ANNOUNCEMENTS" EntitySet="ANNOUNCEMENTS" />
+          </AssociationSet>
+          <AssociationSet Name="FK__EPIDOSE__FACULTY__36B12243" Association="UniversiteOtomasyonModel.FK__EPIDOSE__FACULTY__36B12243">
+            <End Role="FACULTY" EntitySet="FACULTY" />
+            <End Role="EPIDOSE" EntitySet="EPIDOSE" />
+          </AssociationSet>
+          <AssociationSet Name="FK__LESSONTb__EPIDOS__49C3F6B7" Association="UniversiteOtomasyonModel.FK__LESSONTb__EPIDOS__49C3F6B7">
+            <End Role="EPIDOSE" EntitySet="EPIDOSE" />
+            <End Role="LESSONTb" EntitySet="LESSONTb" />
+          </AssociationSet>
+          <AssociationSet Name="FK__UserDetai__EPIDO__412EB0B6" Association="UniversiteOtomasyonModel.FK__UserDetai__EPIDO__412EB0B6">
+            <End Role="EPIDOSE" EntitySet="EPIDOSE" />
+            <End Role="UserDetails" EntitySet="UserDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK__UserDetai__FACUL__403A8C7D" Association="UniversiteOtomasyonModel.FK__UserDetai__FACUL__403A8C7D">
+            <End Role="FACULTY" EntitySet="FACULTY" />
+            <End Role="UserDetails" EntitySet="UserDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK__NOTESTb__LESSONI__5165187F" Association="UniversiteOtomasyonModel.FK__NOTESTb__LESSONI__5165187F">
+            <End Role="LESSONTb" EntitySet="LESSONTb" />
+            <End Role="NOTESTb" EntitySet="NOTESTb" />
+          </AssociationSet>
+          <AssociationSet Name="FK__MESSAGESS__ANCHO__21B6055D" Association="UniversiteOtomasyonModel.FK__MESSAGESS__ANCHO__21B6055D">
+            <End Role="USERS" EntitySet="USERS" />
+            <End Role="MESSAGESS" EntitySet="MESSAGESS" />
+          </AssociationSet>
+          <AssociationSet Name="FK__NOTESTb__UserDet__5070F446" Association="UniversiteOtomasyonModel.FK__NOTESTb__UserDet__5070F446">
+            <End Role="UserDetails" EntitySet="UserDetails" />
+            <End Role="NOTESTb" EntitySet="NOTESTb" />
+          </AssociationSet>
+          <AssociationSet Name="FK__USERS__ROLID__173876EA" Association="UniversiteOtomasyonModel.FK__USERS__ROLID__173876EA">
+            <End Role="ROL" EntitySet="ROL" />
+            <End Role="USERS" EntitySet="USERS" />
+          </AssociationSet>
+          <AssociationSet Name="FK__UserDetai__USERI__3F466844" Association="UniversiteOtomasyonModel.FK__UserDetai__USERI__3F466844">
+            <End Role="USERS" EntitySet="USERS" />
+            <End Role="UserDetails" EntitySet="UserDetails" />
+          </AssociationSet>
+          <FunctionImport Name="noteAddProcedure">
+            <Parameter Name="NOTADDEDID" Mode="In" Type="Int32" />
+            <Parameter Name="LESSONID" Mode="In" Type="Int32" />
+            <Parameter Name="UserDetailsId" Mode="In" Type="Int32" />
+            <Parameter Name="NOTVISA1" Mode="In" Type="String" />
+            <Parameter Name="NOTVISA2" Mode="In" Type="String" />
+            <Parameter Name="NOTFINAL" Mode="In" Type="String" />
+            <Parameter Name="NOTCOMPLETE" Mode="In" Type="String" />
+          </FunctionImport>
+          </EntityContainer>
+        <ComplexType Name="getStudentList_Result">
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="String" Name="NAMESURNAME" Nullable="true" MaxLength="50" />
+          <Property Type="Int64" Name="NUMBER" Nullable="true" />
+          <Property Type="String" Name="TCNUMBER" Nullable="false" MaxLength="11" />
+          <Property Type="Boolean" Name="GENDER" Nullable="false" />
+          <Property Type="DateTime" Name="BIRTHDAY" Nullable="false" />
+          <Property Type="String" Name="ADDRES" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="TELNUMBER" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="FACULTY" Nullable="false" />
+          <Property Type="Int32" Name="EPIDOSE" Nullable="false" />
+          <Property Type="Int32" Name="USERCLASS" Nullable="true" />
+          <Property Type="String" Name="IMAGES" Nullable="true" MaxLength="100" />
+          <Property Type="Int32" Name="USERID" Nullable="false" />
+          <Property Type="String" Name="USERNAME" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="PASSWORD" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="ID1" Nullable="false" />
+          <Property Type="String" Name="USERNAME1" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="PASSWORDUSER" Nullable="false" MaxLength="10" />
+          <Property Type="Int32" Name="ROLID" Nullable="false" />
+        </ComplexType>
+        <EntityType Name="ANNOUNCEMENTS">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TITLE" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="CONTENT" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="ANNOUNCEMENTSDATE" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="USERID" Type="Int32" Nullable="false" />
+          <Property Name="State" Type="Int32" />
+          <NavigationProperty Name="USERS" Relationship="UniversiteOtomasyonModel.FK__ANNOUNCEM__USERI__24927208" FromRole="ANNOUNCEMENTS" ToRole="USERS" />
+        </EntityType>
+        <EntityType Name="EPIDOSE">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EPIDOSENAME" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="FACULTYID" Type="Int32" />
+          <NavigationProperty Name="FACULTY" Relationship="UniversiteOtomasyonModel.FK__EPIDOSE__FACULTY__36B12243" FromRole="EPIDOSE" ToRole="FACULTY" />
+          <NavigationProperty Name="LESSONTb" Relationship="UniversiteOtomasyonModel.FK__LESSONTb__EPIDOS__49C3F6B7" FromRole="EPIDOSE" ToRole="LESSONTb" />
+          <NavigationProperty Name="UserDetails" Relationship="UniversiteOtomasyonModel.FK__UserDetai__EPIDO__412EB0B6" FromRole="EPIDOSE" ToRole="UserDetails" />
+        </EntityType>
+        <EntityType Name="FACULTY">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FACULTYNAME" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="EPIDOSE" Relationship="UniversiteOtomasyonModel.FK__EPIDOSE__FACULTY__36B12243" FromRole="FACULTY" ToRole="EPIDOSE" />
+          <NavigationProperty Name="UserDetails" Relationship="UniversiteOtomasyonModel.FK__UserDetai__FACUL__403A8C7D" FromRole="FACULTY" ToRole="UserDetails" />
+        </EntityType>
+        <EntityType Name="LESSONTb">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LESSONNAME" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CODE" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="CREDIT" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="EPIDOSEID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="EPIDOSE" Relationship="UniversiteOtomasyonModel.FK__LESSONTb__EPIDOS__49C3F6B7" FromRole="LESSONTb" ToRole="EPIDOSE" />
+          <NavigationProperty Name="NOTESTb" Relationship="UniversiteOtomasyonModel.FK__NOTESTb__LESSONI__5165187F" FromRole="LESSONTb" ToRole="NOTESTb" />
+        </EntityType>
+        <EntityType Name="MESSAGESS">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SENDERID" Type="Int32" Nullable="false" />
+          <Property Name="ANCHOVIESID" Type="Int32" Nullable="false" />
+          <Property Name="MESSAGECONTENT" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="MESSAGESENDERDATE" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="USERS" Relationship="UniversiteOtomasyonModel.FK__MESSAGESS__ANCHO__21B6055D" FromRole="MESSAGESS" ToRole="USERS" />
+        </EntityType>
+        <EntityType Name="NOTESTb">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NOTADDEDID" Type="Int32" Nullable="false" />
+          <Property Name="LESSONID" Type="Int32" Nullable="false" />
+          <Property Name="UserDetailsId" Type="Int32" Nullable="false" />
+          <Property Name="NOTVISA1" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="NOTVISA2" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="NOTFINAL" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="NOTCOMPLETE" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="LESSONTb" Relationship="UniversiteOtomasyonModel.FK__NOTESTb__LESSONI__5165187F" FromRole="NOTESTb" ToRole="LESSONTb" />
+          <NavigationProperty Name="UserDetails" Relationship="UniversiteOtomasyonModel.FK__NOTESTb__UserDet__5070F446" FromRole="NOTESTb" ToRole="UserDetails" />
+        </EntityType>
+        <EntityType Name="ROL">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ROLNAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="STATEROL" Type="Int32" />
+          <NavigationProperty Name="USERS" Relationship="UniversiteOtomasyonModel.FK__USERS__ROLID__173876EA" FromRole="ROL" ToRole="USERS" />
+        </EntityType>
+        <EntityType Name="UserDetails">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NAMESURNAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="NUMBER" Type="Int64" />
+          <Property Name="TCNUMBER" Type="String" Nullable="false" MaxLength="11" FixedLength="true" Unicode="false" />
+          <Property Name="GENDER" Type="Boolean" Nullable="false" />
+          <Property Name="BIRTHDAY" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="ADDRES" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="TELNUMBER" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="FACULTY" Type="Int32" Nullable="false" />
+          <Property Name="EPIDOSE" Type="Int32" Nullable="false" />
+          <Property Name="USERCLASS" Type="Int32" />
+          <Property Name="IMAGES" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="USERID" Type="Int32" Nullable="false" />
+          <Property Name="USERNAME" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="PASSWORD" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="EPIDOSE1" Relationship="UniversiteOtomasyonModel.FK__UserDetai__EPIDO__412EB0B6" FromRole="UserDetails" ToRole="EPIDOSE" />
+          <NavigationProperty Name="FACULTY1" Relationship="UniversiteOtomasyonModel.FK__UserDetai__FACUL__403A8C7D" FromRole="UserDetails" ToRole="FACULTY" />
+          <NavigationProperty Name="NOTESTb" Relationship="UniversiteOtomasyonModel.FK__NOTESTb__UserDet__5070F446" FromRole="UserDetails" ToRole="NOTESTb" />
+          <NavigationProperty Name="USERS" Relationship="UniversiteOtomasyonModel.FK__UserDetai__USERI__3F466844" FromRole="UserDetails" ToRole="USERS" />
+        </EntityType>
+        <EntityType Name="USERS">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="USERNAME" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="PASSWORDUSER" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="false" />
+          <Property Name="ROLID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="ANNOUNCEMENTS" Relationship="UniversiteOtomasyonModel.FK__ANNOUNCEM__USERI__24927208" FromRole="USERS" ToRole="ANNOUNCEMENTS" />
+          <NavigationProperty Name="MESSAGESS" Relationship="UniversiteOtomasyonModel.FK__MESSAGESS__ANCHO__21B6055D" FromRole="USERS" ToRole="MESSAGESS" />
+          <NavigationProperty Name="ROL" Relationship="UniversiteOtomasyonModel.FK__USERS__ROLID__173876EA" FromRole="USERS" ToRole="ROL" />
+          <NavigationProperty Name="UserDetails" Relationship="UniversiteOtomasyonModel.FK__UserDetai__USERI__3F466844" FromRole="USERS" ToRole="UserDetails" />
+        </EntityType>
+        <Association Name="FK__ANNOUNCEM__USERI__24927208">
+          <End Type="UniversiteOtomasyonModel.USERS" Role="USERS" Multiplicity="1" />
+          <End Type="UniversiteOtomasyonModel.ANNOUNCEMENTS" Role="ANNOUNCEMENTS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="USERS">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="ANNOUNCEMENTS">
+              <PropertyRef Name="USERID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__EPIDOSE__FACULTY__36B12243">
+          <End Type="UniversiteOtomasyonModel.FACULTY" Role="FACULTY" Multiplicity="0..1" />
+          <End Type="UniversiteOtomasyonModel.EPIDOSE" Role="EPIDOSE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FACULTY">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="EPIDOSE">
+              <PropertyRef Name="FACULTYID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__LESSONTb__EPIDOS__49C3F6B7">
+          <End Type="UniversiteOtomasyonModel.EPIDOSE" Role="EPIDOSE" Multiplicity="1" />
+          <End Type="UniversiteOtomasyonModel.LESSONTb" Role="LESSONTb" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EPIDOSE">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="LESSONTb">
+              <PropertyRef Name="EPIDOSEID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__UserDetai__EPIDO__412EB0B6">
+          <End Type="UniversiteOtomasyonModel.EPIDOSE" Role="EPIDOSE" Multiplicity="1" />
+          <End Type="UniversiteOtomasyonModel.UserDetails" Role="UserDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EPIDOSE">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="UserDetails">
+              <PropertyRef Name="EPIDOSE" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__UserDetai__FACUL__403A8C7D">
+          <End Type="UniversiteOtomasyonModel.FACULTY" Role="FACULTY" Multiplicity="1" />
+          <End Type="UniversiteOtomasyonModel.UserDetails" Role="UserDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FACULTY">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="UserDetails">
+              <PropertyRef Name="FACULTY" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__NOTESTb__LESSONI__5165187F">
+          <End Type="UniversiteOtomasyonModel.LESSONTb" Role="LESSONTb" Multiplicity="1" />
+          <End Type="UniversiteOtomasyonModel.NOTESTb" Role="NOTESTb" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LESSONTb">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="NOTESTb">
+              <PropertyRef Name="LESSONID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__MESSAGESS__ANCHO__21B6055D">
+          <End Type="UniversiteOtomasyonModel.USERS" Role="USERS" Multiplicity="1" />
+          <End Type="UniversiteOtomasyonModel.MESSAGESS" Role="MESSAGESS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="USERS">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="MESSAGESS">
+              <PropertyRef Name="ANCHOVIESID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__NOTESTb__UserDet__5070F446">
+          <End Type="UniversiteOtomasyonModel.UserDetails" Role="UserDetails" Multiplicity="1" />
+          <End Type="UniversiteOtomasyonModel.NOTESTb" Role="NOTESTb" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserDetails">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="NOTESTb">
+              <PropertyRef Name="UserDetailsId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__USERS__ROLID__173876EA">
+          <End Type="UniversiteOtomasyonModel.ROL" Role="ROL" Multiplicity="1" />
+          <End Type="UniversiteOtomasyonModel.USERS" Role="USERS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ROL">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="USERS">
+              <PropertyRef Name="ROLID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__UserDetai__USERI__3F466844">
+          <End Type="UniversiteOtomasyonModel.USERS" Role="USERS" Multiplicity="1" />
+          <End Type="UniversiteOtomasyonModel.UserDetails" Role="UserDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="USERS">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="UserDetails">
+              <PropertyRef Name="USERID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="UniversiteOtomasyonModelStoreContainer" CdmEntityContainer="UniversiteOtomasyonEntities">
+          <EntitySetMapping Name="ANNOUNCEMENTS">
+            <EntityTypeMapping TypeName="UniversiteOtomasyonModel.ANNOUNCEMENTS">
+              <MappingFragment StoreEntitySet="ANNOUNCEMENTS">
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="USERID" ColumnName="USERID" />
+                <ScalarProperty Name="ANNOUNCEMENTSDATE" ColumnName="ANNOUNCEMENTSDATE" />
+                <ScalarProperty Name="CONTENT" ColumnName="CONTENT" />
+                <ScalarProperty Name="TITLE" ColumnName="TITLE" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EPIDOSE">
+            <EntityTypeMapping TypeName="UniversiteOtomasyonModel.EPIDOSE">
+              <MappingFragment StoreEntitySet="EPIDOSE">
+                <ScalarProperty Name="FACULTYID" ColumnName="FACULTYID" />
+                <ScalarProperty Name="EPIDOSENAME" ColumnName="EPIDOSENAME" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FACULTY">
+            <EntityTypeMapping TypeName="UniversiteOtomasyonModel.FACULTY">
+              <MappingFragment StoreEntitySet="FACULTY">
+                <ScalarProperty Name="FACULTYNAME" ColumnName="FACULTYNAME" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LESSONTb">
+            <EntityTypeMapping TypeName="UniversiteOtomasyonModel.LESSONTb">
+              <MappingFragment StoreEntitySet="LESSONTb">
+                <ScalarProperty Name="EPIDOSEID" ColumnName="EPIDOSEID" />
+                <ScalarProperty Name="CREDIT" ColumnName="CREDIT" />
+                <ScalarProperty Name="CODE" ColumnName="CODE" />
+                <ScalarProperty Name="LESSONNAME" ColumnName="LESSONNAME" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MESSAGESS">
+            <EntityTypeMapping TypeName="UniversiteOtomasyonModel.MESSAGESS">
+              <MappingFragment StoreEntitySet="MESSAGESS">
+                <ScalarProperty Name="MESSAGESENDERDATE" ColumnName="MESSAGESENDERDATE" />
+                <ScalarProperty Name="MESSAGECONTENT" ColumnName="MESSAGECONTENT" />
+                <ScalarProperty Name="ANCHOVIESID" ColumnName="ANCHOVIESID" />
+                <ScalarProperty Name="SENDERID" ColumnName="SENDERID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="NOTESTb">
+            <EntityTypeMapping TypeName="UniversiteOtomasyonModel.NOTESTb">
+              <MappingFragment StoreEntitySet="NOTESTb">
+                <ScalarProperty Name="NOTCOMPLETE" ColumnName="NOTCOMPLETE" />
+                <ScalarProperty Name="NOTFINAL" ColumnName="NOTFINAL" />
+                <ScalarProperty Name="NOTVISA2" ColumnName="NOTVISA2" />
+                <ScalarProperty Name="NOTVISA1" ColumnName="NOTVISA1" />
+                <ScalarProperty Name="UserDetailsId" ColumnName="UserDetailsId" />
+                <ScalarProperty Name="LESSONID" ColumnName="LESSONID" />
+                <ScalarProperty Name="NOTADDEDID" ColumnName="NOTADDEDID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ROL">
+            <EntityTypeMapping TypeName="UniversiteOtomasyonModel.ROL">
+              <MappingFragment StoreEntitySet="ROL">
+                <ScalarProperty Name="STATEROL" ColumnName="STATEROL" />
+                <ScalarProperty Name="ROLNAME" ColumnName="ROLNAME" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserDetails">
+            <EntityTypeMapping TypeName="UniversiteOtomasyonModel.UserDetails">
+              <MappingFragment StoreEntitySet="UserDetails">
+                <ScalarProperty Name="PASSWORD" ColumnName="PASSWORD" />
+                <ScalarProperty Name="USERNAME" ColumnName="USERNAME" />
+                <ScalarProperty Name="USERID" ColumnName="USERID" />
+                <ScalarProperty Name="IMAGES" ColumnName="IMAGES" />
+                <ScalarProperty Name="USERCLASS" ColumnName="USERCLASS" />
+                <ScalarProperty Name="EPIDOSE" ColumnName="EPIDOSE" />
+                <ScalarProperty Name="FACULTY" ColumnName="FACULTY" />
+                <ScalarProperty Name="TELNUMBER" ColumnName="TELNUMBER" />
+                <ScalarProperty Name="ADDRES" ColumnName="ADDRES" />
+                <ScalarProperty Name="BIRTHDAY" ColumnName="BIRTHDAY" />
+                <ScalarProperty Name="GENDER" ColumnName="GENDER" />
+                <ScalarProperty Name="TCNUMBER" ColumnName="TCNUMBER" />
+                <ScalarProperty Name="NUMBER" ColumnName="NUMBER" />
+                <ScalarProperty Name="NAMESURNAME" ColumnName="NAMESURNAME" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="USERS">
+            <EntityTypeMapping TypeName="UniversiteOtomasyonModel.USERS">
+              <MappingFragment StoreEntitySet="USERS">
+                <ScalarProperty Name="ROLID" ColumnName="ROLID" />
+                <ScalarProperty Name="PASSWORDUSER" ColumnName="PASSWORDUSER" />
+                <ScalarProperty Name="USERNAME" ColumnName="USERNAME" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="noteAddProcedure" FunctionName="UniversiteOtomasyonModel.Store.noteAddProcedure" />
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
